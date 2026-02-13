@@ -50,6 +50,29 @@ npm run dev
 - Click on "New codespace" to launch a new Codespace environment.
 - Edit files directly within the Codespace and commit and push your changes once you're done.
 
+## AI Chat Configuration
+
+The chat page uses a real OpenAI-powered assistant via a Vercel serverless function (`/api/chat`). The API key is **never exposed to the client**.
+
+### Local development
+
+```sh
+# Copy the example env file and fill in your OpenAI API key
+cp .env.example .env
+# Then edit .env and replace YOUR_OPENAI_API_KEY_HERE with your real key
+```
+
+You can test locally with `npx vercel dev` (requires the Vercel CLI).
+
+### Production (Vercel)
+
+1. Go to your project on [vercel.com](https://vercel.com)
+2. Navigate to **Settings → Environment Variables**
+3. Add `OPENAI_API_KEY` with your secret key
+4. **Redeploy** for the change to take effect
+
+> ⚠️ **Never** put your API key in client-side code or commit it to the repository.
+
 ## What technologies are used for this project?
 
 This project is built with:
