@@ -1,4 +1,4 @@
-// Vercel Serverless Function — TimeTravel Agency Chat (OpenAI)
+// Vercel Serverless Function — TimeTravel Agency Chat (Groq)
 // Pure JavaScript, no dependencies, no imports.
 
 const DESTINATIONS_CONTEXT = `
@@ -63,11 +63,9 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "Le champ 'message' est requis." });
     }
 
-    const apiKey = process.env.OPENAI_API_KEY;
-    // DEBUG: log ALL env var keys (not values) to diagnose
-    console.log("DEBUG ALL env keys:", Object.keys(process.env).sort().join(", "));
+    const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
-        console.error("OPENAI_API_KEY missing");
+        console.error("GROQ_API_KEY missing");
         return res.status(500).json({ error: "Service non configuré." });
     }
 
@@ -80,14 +78,14 @@ export default async function handler(req, res) {
     }
 
     try {
-        const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+        const openaiRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + apiKey,
             },
             body: JSON.stringify({
-                model: "gpt-4o-mini",
+                model: "llama-3.3-70b-versatile",
                 max_tokens: 450,
                 temperature: 0.7,
                 messages: [
@@ -99,7 +97,7 @@ export default async function handler(req, res) {
 
         if (!openaiRes.ok) {
             const errText = await openaiRes.text();
-            console.error("OpenAI error:", openaiRes.status, errText);
+            console.error("Groq error:", openaiRes.status, errText);
             return res.status(500).json({ error: "Erreur IA: " + openaiRes.status });
         }
 
