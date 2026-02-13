@@ -1,5 +1,4 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import OpenAI from "openai";
 
 // Compact destination context embedded directly to avoid import issues with Vite's src/ structure
 const DESTINATIONS_CONTEXT = `
@@ -80,19 +79,34 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const openai = new OpenAI({ apiKey });
-
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      max_tokens: 450,
-      temperature: 0.7,
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: userContent },
-      ],
+    // Direct fetch to OpenAI Chat Completions API (avoids SDK version issues)
+    const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        max_tokens: 450,
+        temperature: 0.7,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          { role: "user", content: userContent },
+        ],
+      }),
     });
 
-    const reply = completion.choices?.[0]?.message?.content ?? "Désolé, je n'ai pas pu générer de réponse. Veuillez réessayer.";
+    if (!openaiRes.ok) {
+      const errorBody = await openaiRes.text();
+      console.error("OpenAI API error:", openaiRes.status, errorBody);
+      return res.status(500).json({
+        error: "Une erreur est survenue lors de la communication avec l'assistant. Veuillez réessayer dans quelques instants.",
+      });
+    }
+
+    const data = await openaiRes.json();
+    const reply = data?.choices?.[0]?.message?.content ?? "Désolé, je n'ai pas pu générer de réponse. Veuillez réessayer.";
 
     return res.status(200).json({ reply });
   } catch (error: any) {
