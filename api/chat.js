@@ -64,10 +64,8 @@ export default async function handler(req, res) {
     }
 
     const apiKey = process.env.OPENAI_API_KEY;
-    // DEBUG: log env var names to diagnose missing key issue
-    const envKeys = Object.keys(process.env).filter(k => k.includes("OPEN") || k.includes("API") || k.includes("KEY"));
-    console.log("DEBUG env keys matching OPEN/API/KEY:", envKeys);
-    console.log("DEBUG OPENAI_API_KEY exists:", !!apiKey, "length:", apiKey ? apiKey.length : 0);
+    // DEBUG: log ALL env var keys (not values) to diagnose
+    console.log("DEBUG ALL env keys:", Object.keys(process.env).sort().join(", "));
     if (!apiKey) {
         console.error("OPENAI_API_KEY missing");
         return res.status(500).json({ error: "Service non configuré." });
