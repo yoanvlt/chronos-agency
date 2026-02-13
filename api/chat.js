@@ -1,5 +1,5 @@
 // Vercel Serverless Function — TimeTravel Agency Chat (Groq)
-// Pure JavaScript, no dependencies, no imports.
+// Uses Groq API (free) with Llama 3.3 70B model
 
 const DESTINATIONS_CONTEXT = `
 Destinations disponibles:
