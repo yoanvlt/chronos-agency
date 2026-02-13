@@ -1,96 +1,127 @@
-# Welcome to your Lovable project
+# 🕰️ Chronos Agency — TimeTravel Agency
 
-## Project info
+> **Agence de voyages temporels** — Explorez les époques les plus fascinantes de l'humanité.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+🔗 **Démo en ligne** : [chronos-agency.vercel.app](https://chronos-agency.vercel.app)
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## ✨ Fonctionnalités
 
-**Use Lovable**
+- **Landing page immersive** — Animations particules, gradient animé, présentation premium
+- **3 destinations temporelles** — Paris 1889, Crétacé (−68M d'années), Florence 1504
+- **Pages détail** — Activités, avertissements, tarifs, durées par destination
+- **Quiz de recommandation** — 5 questions pour trouver sa destination idéale + itinéraire suggéré
+- **Chat IA** — Agent temporel conversationnel (Groq / Llama 3.3 70B) avec contexte destination et quiz
+- **Design responsive** — Mobile-first, dark mode, micro-animations
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🛠️ Stack technique
 
-**Use your preferred IDE**
+| Catégorie | Technologie |
+|-----------|------------|
+| Framework | [Vite](https://vitejs.dev/) + [React](https://react.dev/) + TypeScript |
+| UI | [shadcn/ui](https://ui.shadcn.com/) + Tailwind CSS |
+| Animations | [Framer Motion](https://www.framer.com/motion/) |
+| Routing | React Router v6 |
+| IA | [Groq](https://groq.com/) (Llama 3.3 70B) via API REST |
+| Hébergement | [Vercel](https://vercel.com/) (frontend + serverless function) |
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## 🚀 Installation locale
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Cloner le repository
+git clone https://github.com/yoanvlt/chronos-agency.git
+cd chronos-agency
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Installer les dépendances
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Configurer les variables d'environnement
+cp .env.example .env
+# Éditer .env et renseigner votre clé Groq (voir section ci-dessous)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Lancer le serveur de développement
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## AI Chat Configuration
-
-The chat page uses a real OpenAI-powered assistant via a Vercel serverless function (`/api/chat`). The API key is **never exposed to the client**.
-
-### Local development
+### Build & preview
 
 ```sh
-# Copy the example env file and fill in your OpenAI API key
-cp .env.example .env
-# Then edit .env and replace YOUR_OPENAI_API_KEY_HERE with your real key
+npm run build      # Build de production
+npm run preview    # Prévisualisation du build
 ```
 
-You can test locally with `npx vercel dev` (requires the Vercel CLI).
+---
 
-### Production (Vercel)
+## 🔑 Variables d'environnement
 
-1. Go to your project on [vercel.com](https://vercel.com)
-2. Navigate to **Settings → Environment Variables**
-3. Add `OPENAI_API_KEY` with your secret key
-4. **Redeploy** for the change to take effect
+| Variable | Obligatoire | Description |
+|----------|:-----------:|-------------|
+| `GROQ_API_KEY` | ✅ | Clé API Groq — obtenir gratuitement sur [console.groq.com](https://console.groq.com) |
 
-> ⚠️ **Never** put your API key in client-side code or commit it to the repository.
+### Configuration
 
-## What technologies are used for this project?
+1. Copier `.env.example` → `.env`
+2. Remplir `GROQ_API_KEY` avec votre clé (commence par `gsk_...`)
+3. Le fichier `.env` est ignoré par Git (jamais commité)
 
-This project is built with:
+> [!CAUTION]
+> **Sécurité** : Ne commitez **jamais** votre clé API. Le fichier `.env` est dans le `.gitignore`.
+> La clé est utilisée uniquement côté serveur (serverless function Vercel) et n'est jamais exposée au client.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## ☁️ Déploiement Vercel
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+1. Connecter le repository GitHub sur [vercel.com](https://vercel.com)
+2. Aller dans **Settings → Environment Variables**
+3. Ajouter `GROQ_API_KEY` avec votre clé
+4. **Pousser du code** (commit + push) pour déclencher un nouveau déploiement qui prendra en compte la variable
 
-## Can I connect a custom domain to my Lovable project?
+---
 
-Yes, you can!
+## 🤖 IA — Comment ça marche
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Architecture
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```
+Client (Chat.tsx) → POST /api/chat → Vercel Serverless Function → Groq API → Réponse
+```
+
+### Route `/api/chat`
+
+- **Fichier** : `api/chat.js` (serverless function Vercel)
+- **Modèle** : `llama-3.3-70b-versatile` via Groq (gratuit)
+- **Entrée** : `{ message, destinationSlug?, quizResult? }`
+- **Sortie** : `{ reply }` (texte en français)
+
+### Prompt système & garde-fous
+
+L'agent IA suit un prompt système strict :
+- Ne parle **que** des 3 destinations du catalogue
+- N'invente **jamais** de 4e destination
+- Vouvoie toujours le client
+- Rappelle les règles de sécurité pour les destinations risquées (Crétacé)
+- Répond en français, 2-4 paragraphes max
+- Admet honnêtement quand il n'a pas l'information
+
+Le contexte est enrichi automatiquement :
+- **Destination consultée** : la dernière page détail visitée est transmise
+- **Résultat du quiz** : si un quiz a été complété, le résultat est transmis
+
+---
+
+## 📝 Crédits & licences
+
+| Élément | Source | Licence |
+|---------|--------|---------|
+| UI Components | [shadcn/ui](https://ui.shadcn.com/) | MIT |
+| Animations | [Framer Motion](https://www.framer.com/motion/) | MIT |
+| IA | [Groq](https://groq.com/) + Meta Llama 3.3 70B | Groq ToS / Llama Community License |
+| Outils de dev | [Lovable](https://lovable.dev/), Claude (Anthropic) | — |
+| Images destinations | [Unsplash](https://unsplash.com/) | [Unsplash License](https://unsplash.com/license) (libre d'utilisation) |
+| Icônes | [Lucide](https://lucide.dev/) | ISC |

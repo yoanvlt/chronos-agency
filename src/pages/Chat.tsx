@@ -40,11 +40,19 @@ const Chat = () => {
     setInput("");
     setIsTyping(true);
 
+    // Lire le contexte depuis localStorage (peut être null)
+    const destinationSlug = localStorage.getItem("lastDestinationSlug") || undefined;
+    let quizResult: any = undefined;
+    try {
+      const raw = localStorage.getItem("lastQuizResult");
+      if (raw) quizResult = JSON.parse(raw);
+    } catch { /* localStorage vide ou invalide — on ignore */ }
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text.trim() }),
+        body: JSON.stringify({ message: text.trim(), destinationSlug, quizResult }),
       });
 
       if (!res.ok) {
@@ -102,8 +110,8 @@ const Chat = () => {
                   {msg.role === "assistant" ? <Bot className="h-4 w-4" /> : <User className="h-4 w-4" />}
                 </div>
                 <div className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${msg.role === "assistant"
-                    ? "rounded-tl-sm bg-card border border-border/50"
-                    : "rounded-tr-sm bg-primary text-primary-foreground"
+                  ? "rounded-tl-sm bg-card border border-border/50"
+                  : "rounded-tr-sm bg-primary text-primary-foreground"
                   }`}>
                   {msg.content}
                 </div>

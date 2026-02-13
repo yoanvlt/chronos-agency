@@ -33,6 +33,11 @@ const Destinations = () => {
                 className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/50 bg-card transition-all duration-300 hover:border-primary/50 hover:glow-primary"
               >
                 <div className="relative aspect-[4/3] bg-secondary/50 overflow-hidden">
+                  <img
+                    src={dest.image}
+                    alt={dest.name}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
                   <div className="absolute bottom-4 left-4 flex items-center gap-1.5 text-sm text-muted-foreground">
                     <MapPin className="h-3.5 w-3.5" />

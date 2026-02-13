@@ -37,7 +37,7 @@ export const destinations: Destination[] = [
     ],
     price: "2 450 €",
     durationOptions: ["1 jour", "3 jours", "1 semaine"],
-    image: "/placeholder.svg",
+    image: "/images/paris-1889.jpg",
     tags: ["Culture", "Gastronomie", "Art", "Histoire"]
   },
   {
@@ -64,7 +64,7 @@ export const destinations: Destination[] = [
     ],
     price: "8 900 €",
     durationOptions: ["1 jour", "3 jours"],
-    image: "/placeholder.svg",
+    image: "/images/cretaceous.jpg",
     tags: ["Aventure", "Danger", "Nature", "Science"]
   },
   {
@@ -90,7 +90,7 @@ export const destinations: Destination[] = [
     ],
     price: "3 200 €",
     durationOptions: ["1 jour", "3 jours", "1 semaine"],
-    image: "/placeholder.svg",
+    image: "/images/florence-1504.jpg",
     tags: ["Art", "Culture", "Histoire", "Intrigue"]
   }
 ];

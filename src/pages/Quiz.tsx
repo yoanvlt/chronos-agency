@@ -114,7 +114,13 @@ const Quiz = () => {
     if (step < questions.length - 1) {
       setStep(step + 1);
     } else {
-      setResult(computeResult(newAnswers));
+      const recommendedSlug = computeResult(newAnswers);
+      setResult(recommendedSlug);
+      // Sauvegarder le résultat du quiz pour le contexte chat IA
+      localStorage.setItem("lastQuizResult", JSON.stringify({
+        recommendedSlug,
+        answers: newAnswers,
+      }));
     }
   };
 

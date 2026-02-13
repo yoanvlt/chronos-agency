@@ -4,21 +4,34 @@ import { ArrowLeft, MessageCircle, AlertTriangle, CheckCircle, MapPin } from "lu
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getDestinationBySlug } from "@/data/destinations";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const DestinationDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const destination = getDestinationBySlug(slug || "");
   const [selectedDuration, setSelectedDuration] = useState<string | null>(null);
 
+  // Sauvegarder la dernière destination consultée pour le contexte chat IA
+  useEffect(() => {
+    if (slug) {
+      localStorage.setItem("lastDestinationSlug", slug);
+    }
+  }, [slug]);
+
   if (!destination) return <Navigate to="/destinations" replace />;
 
   return (
-    <div className="min-h-screen pb-20 pt-20">
-      {/* Header */}
+    <div className="min-h-screen pb-20 pt-16">
+      {/* Hero image */}
       <div className="relative">
-        <div className="gradient-mesh h-64 sm:h-80" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
+        <div className="h-72 sm:h-96 overflow-hidden">
+          <img
+            src={destination.image}
+            alt={destination.name}
+            className="h-full w-full object-cover"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 px-4">
           <div className="mx-auto max-w-4xl pb-8">
             <Link to="/destinations" className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
@@ -82,11 +95,10 @@ const DestinationDetail = () => {
                 <button
                   key={opt}
                   onClick={() => setSelectedDuration(opt)}
-                  className={`rounded-full border px-5 py-2 text-sm font-medium transition-all ${
-                    selectedDuration === opt
+                  className={`rounded-full border px-5 py-2 text-sm font-medium transition-all ${selectedDuration === opt
                       ? "border-primary bg-primary text-primary-foreground glow-primary"
                       : "border-border bg-secondary text-secondary-foreground hover:border-primary/50"
-                  }`}
+                    }`}
                 >
                   {opt}
                 </button>

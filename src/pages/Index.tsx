@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, Clock, Shield } from "lucide-react";
+import { ArrowRight, Sparkles, Clock, Shield, Zap, Scale, Eye, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { destinations } from "@/data/destinations";
 
@@ -71,27 +71,37 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Features */}
+      {/* Pourquoi nous ? */}
       <section className="border-t border-border/50 bg-card/30 px-4 py-20">
-        <div className="mx-auto grid max-w-5xl gap-8 sm:grid-cols-3">
-          {[
-            { icon: Clock, title: "Précision temporelle", desc: "Arrivée à la seconde près dans l'époque choisie." },
-            { icon: Shield, title: "Sécurité maximale", desc: "Guides certifiés et protocoles de retour d'urgence." },
-            { icon: Sparkles, title: "Immersion totale", desc: "Vêtements, langue, monnaie — tout est prévu." },
-          ].map((f, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
-              className="rounded-xl border border-border/50 bg-card p-6 text-center"
-            >
-              <f.icon className="mx-auto mb-4 h-8 w-8 text-primary" />
-              <h3 className="mb-2 text-sm font-bold uppercase tracking-wider">{f.title}</h3>
-              <p className="text-sm text-muted-foreground">{f.desc}</p>
-            </motion.div>
-          ))}
+        <div className="mx-auto max-w-5xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12 text-center text-3xl font-bold tracking-tight sm:text-4xl"
+          >
+            Pourquoi <span className="text-primary">Chronos Agency</span> ?
+          </motion.h2>
+          <div className="grid gap-8 sm:grid-cols-3">
+            {[
+              { icon: Clock, title: "Précision temporelle", desc: "Arrivée à la seconde près dans l'époque choisie grâce à notre technologie de calibration quantique." },
+              { icon: Shield, title: "Sécurité maximale", desc: "Guides certifiés, protocoles de retour d'urgence et bracelet de rappel inclus dans chaque voyage." },
+              { icon: Sparkles, title: "Immersion totale", desc: "Vêtements d'époque, cours de langue, monnaie locale — chaque détail est préparé pour vous." },
+            ].map((f, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+                className="rounded-xl border border-border/50 bg-card p-6 text-center"
+              >
+                <f.icon className="mx-auto mb-4 h-8 w-8 text-primary" />
+                <h3 className="mb-2 text-sm font-bold uppercase tracking-wider">{f.title}</h3>
+                <p className="text-sm text-muted-foreground">{f.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -114,7 +124,13 @@ const Index = () => {
                   to={`/destinations/${dest.slug}`}
                   className="group block overflow-hidden rounded-xl border border-border/50 bg-card transition-all hover:border-primary/50 hover:glow-primary"
                 >
-                  <div className="aspect-video bg-secondary/50" />
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={dest.image}
+                      alt={dest.name}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
                   <div className="p-5">
                     <p className="mb-1 text-xs font-medium uppercase tracking-widest text-accent">{dest.period}</p>
                     <h3 className="mb-2 text-lg font-bold transition-colors group-hover:text-primary">{dest.name}</h3>
@@ -128,6 +144,45 @@ const Index = () => {
                     </div>
                   </div>
                 </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Sécurité & éthique du voyage temporel */}
+      <section className="border-t border-border/50 bg-card/30 px-4 py-20">
+        <div className="mx-auto max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
+              Sécurité & <span className="text-primary">éthique</span>
+            </h2>
+            <p className="mx-auto mb-10 max-w-2xl text-muted-foreground">
+              Le voyage temporel est une responsabilité. Voici nos engagements.
+            </p>
+          </motion.div>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {[
+              { icon: Lock, title: "Non-interférence", desc: "Aucune action susceptible de modifier le cours de l'histoire n'est autorisée. Politique de zéro impact." },
+              { icon: Eye, title: "Observation éthique", desc: "Nos voyageurs n'interagissent qu'avec des acteurs informés ou dans un cadre strictement encadré." },
+              { icon: Scale, title: "Responsabilité temporelle", desc: "Chaque mission est auditée. Tout objet amené est inventorié et ramené. Rien n'est laissé derrière." },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+                className="rounded-xl border border-primary/20 bg-card p-6 text-center"
+              >
+                <item.icon className="mx-auto mb-4 h-8 w-8 text-primary" />
+                <h3 className="mb-2 text-sm font-bold uppercase tracking-wider">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
               </motion.div>
             ))}
           </div>
